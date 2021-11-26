@@ -73,6 +73,7 @@ for (let i = 1; i <= 10; i++) {
             Pom1 = i;
             Pom2 = j;
             turn = !turn;
+            Brojenje();
           }
         }
         else {
@@ -84,6 +85,7 @@ for (let i = 1; i <= 10; i++) {
             Pom1 = i;
             Pom2 = j;
             turn = !turn;
+            Brojenje();
           }
         }
       }
