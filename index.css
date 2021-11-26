@@ -101,8 +101,13 @@ li{
 }
 
 
+.blacks{
+    background-color: rgba(13, 13, 13,0.5);
 
-
+}
+.bela{
+    background-color: white;
+}
 
 
 
