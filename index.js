@@ -85,7 +85,6 @@ for (let i = 1; i <= 10; i++) {
             Pom1 = i;
             Pom2 = j;
             turn = !turn;
-            Brojenje();
           }
         }
       }
@@ -113,40 +112,52 @@ for (let i = 1; i <= 10; i++) {
     };
   }
 }
-//AKo su sva polja oko i jotog puna
-function Puno(Gridara, i, j) {
 
-  //Kada smo blizu cosadi kada smo blizu bantova.
-
+//#region Funkcije Provere Kada nema Mesta za potez
+function DonjeDesnoCose(Gridara, i, j) {
   if (i == 10 && j == 10) { //donje desno
     if (
       Gridara[i - 1][j].childElementCount > 0 && //Vert Iznad
       Gridara[i][j - 1].childElementCount > 0 && //levo
       Gridara[i - 1][j - 1].childElementCount > 0  //leva gornja
     ) return true;
+    else return false;
   }
-  else if (i == 1 && j == 1) { //Gornje levo
-    if (Gridara[i + 1][j].childElementCount > 0 && //Vertikano ispod]
-      Gridara[i][j + 1].childElementCount > 0 && //desno
-      Gridara[i + 1][j + 1].childElementCount > 0 //desna donja
-    ) return true;
-  }//Kada smo bilo gde pri samom vrhu.
-
-  else if (i == 1 && j == 10) { //Gornji Desni
-    if (Gridara[i + 1][j].childElementCount > 0 && //Vertikano ispod]
-      Gridara[i][j - 1].childElementCount > 0 && //levo
-      Gridara[i + 1][j - 1].childElementCount > 0 //leva donja
-    ) return true;
-  }
-  else if (i == 10 && j == 1) {
+}
+function DonjeLevoCose(Gridara, i, j) {
+  if (i == 10 && j == 1) {
     if (
       Gridara[i - 1][j].childElementCount > 0 && //Vert Iznad
       Gridara[i][j + 1].childElementCount > 0 && //desno
       Gridara[i - 1][j + 1].childElementCount > 0 //desna gornja
     ) return true;
+    else return false;
+
   }
-  //Dole
-  else if(i==10){
+}
+
+function GornjeLevoCose(Gridara, i, j) {
+  if (i == 1 && j == 1) { //Gornje levo
+    if (Gridara[i + 1][j].childElementCount > 0 && //Vertikano ispod]
+      Gridara[i][j + 1].childElementCount > 0 && //desno
+      Gridara[i + 1][j + 1].childElementCount > 0 //desna donja
+    ) return true;
+    else return false;
+
+  }//Kada smo bilo gde pri samom vrhu.
+}
+function GornjeDesnoCose(Gridara, i, j) {
+  if (i == 1 && j == 10) { //Gornji Desni
+    if (Gridara[i + 1][j].childElementCount > 0 && //Vertikano ispod]
+      Gridara[i][j - 1].childElementCount > 0 && //levo
+      Gridara[i + 1][j - 1].childElementCount > 0 //leva donja
+    ) return true;
+    else return false;
+
+  }
+}
+function Dno(Gridara, i, j) {
+  if (i == 10) {
     if (
       Gridara[i - 1][j].childElementCount > 0 && //Vert Iznad
       Gridara[i][j - 1].childElementCount > 0 && //levo
@@ -154,9 +165,13 @@ function Puno(Gridara, i, j) {
       Gridara[i - 1][j - 1].childElementCount > 0 && //leva gornja
       Gridara[i - 1][j + 1].childElementCount > 0 //desna gornja
     ) return true;
+    else return false;
+
   }
-  //Gore
-  else if (i == 1) {
+}
+
+function Gore(Gridara, i, j) {
+  if (i == 1) {
     if (
       Gridara[i + 1][j].childElementCount > 0 && //Vertikano ispod]
       Gridara[i][j - 1].childElementCount > 0 && //levo
@@ -165,36 +180,79 @@ function Puno(Gridara, i, j) {
       Gridara[i + 1][j + 1].childElementCount > 0 //desna donja
     )
       return true;
+    else return false;
+
   }
 
-  //Levo 
-  else if(j==1){
+}
+function Levo(Gridara, i, j) {
+  if (j == 1) {
     if (Gridara[i + 1][j].childElementCount > 0 && //Vertikano ispod]
       Gridara[i - 1][j].childElementCount > 0 && //Vert Iznad
       Gridara[i][j + 1].childElementCount > 0 && //desno
       Gridara[i - 1][j + 1].childElementCount > 0 && //desna gornja
       Gridara[i + 1][j + 1].childElementCount > 0 //desna donja
     ) return true;
+    else return false;
+
   }
-  //desno
-  else if(j==10){
+}
+
+function Desno(Gridara, i, j) {
+  if (j == 10) {
     if (Gridara[i + 1][j].childElementCount > 0 && //Vertikano ispod]
       Gridara[i - 1][j].childElementCount > 0 && //Vert Iznad
       Gridara[i][j - 1].childElementCount > 0 && //levo
       Gridara[i - 1][j - 1].childElementCount > 0 && //leva gornja
       Gridara[i + 1][j - 1].childElementCount > 0  //leva donja
-    )return true;
+    ) return true;
+    else return false;
+
   }
+}
+function BiloGde(Gridara, i, j) {
+  if (i > 1 && j < 10 && j > 1 && i < 10) {
+    if (Gridara[i + 1][j].childElementCount > 0 && //Vertikano ispod]
+      Gridara[i - 1][j].childElementCount > 0 && //Vert Iznad
+      Gridara[i][j - 1].childElementCount > 0 && //levo
+      Gridara[i][j + 1].childElementCount > 0 && //desno
+      Gridara[i - 1][j - 1].childElementCount > 0 && //leva gornja
+      Gridara[i - 1][j + 1].childElementCount > 0 && //desna gornja
+      Gridara[i + 1][j - 1].childElementCount > 0 && //leva donja
+      Gridara[i + 1][j + 1].childElementCount > 0 //desna donja
+    ) return true;
+    else return false;
+  }
+}
+//#endregion
+
+//#region KonacniUslovi
+//AKo su sva polja oko i jotog puna
+function Puno(Gridara, i, j) {
+  //Kada smo blizu cosadi kada smo blizu bantova.
+  if (DonjeDesnoCose(Gridara, i, j) == true) //donje desno
+    return true
+  else if (GornjeLevoCose(Gridara, i, j) == true)
+    return true;
+  else if (GornjeDesnoCose(Gridara, i, j) == true)
+    return true;
+  else if (DonjeLevoCose(Gridara, i, j) == true)
+    return true
+  //Dole
+  else if (Dno(Gridara, i, j) == true)
+    return true;
+  //Gore
+  else if (Gore(Gridara, i, j) == true)
+    return true;
+  //Levo 
+  else if (Levo(Gridara, i, j) == true)
+    return true;
+  //desno
+  else if (Desno(Gridara, i, j) == true)
+    return true;
   //kada smo bilo gde okruzeni
-  else if (Gridara[i + 1][j].childElementCount > 0 && //Vertikano ispod]
-    Gridara[i - 1][j].childElementCount > 0 && //Vert Iznad
-    Gridara[i][j - 1].childElementCount > 0 && //levo
-    Gridara[i][j + 1].childElementCount > 0 && //desno
-    Gridara[i - 1][j - 1].childElementCount > 0 && //leva gornja
-    Gridara[i - 1][j + 1].childElementCount > 0 && //desna gornja
-    Gridara[i + 1][j - 1].childElementCount > 0 && //leva donja
-    Gridara[i + 1][j + 1].childElementCount > 0 //desna donja
-  ) return true;
+  else if (BiloGde(Gridara, i, j) == true)
+    return true;
   else return false;
 
 }
@@ -235,6 +293,9 @@ const Uslof = (i, j, square, turn) => {
     else return 0;
   }
 };
+//#endregion
+
+
 
 //#region Uslovi
 //Regular checker
@@ -249,8 +310,7 @@ function KontejnBoju(P1, P2, P3, P4, val) {
     return true;
   else return false;
 }
-
-//#region Dodavanje i micanje boja za horizontalu
+//#region Horizontala
 
 function DodajBojuHor(Gridara, i, j, val) {
   Gridara[i][j + 1].classList.add(val);
@@ -273,7 +333,7 @@ function MiciHor(Gridara, i, j, val) {
   PoteziHort[i][j + 2] = null;
   PoteziHort[i][j + 3] = null;
 }
-//#endregion
+
 
 //CheckHorizontalna
 
@@ -360,6 +420,8 @@ const Horizontala = (i, j) => {
     else return false;
   }
 }
+//#endregion
+//#region Vertikala
 function DodajBojuVert(Gridara, i, j, val) {
   Gridara[i][j].classList.add(val);
   Gridara[i + 1][j].classList.add(val);
@@ -466,7 +528,8 @@ const Vertikala = (i, j) => {
       if (brojac != 0) return true;
     } else return false;
 };
-
+//#endregion
+//#region Desna Dijagonala
 //Check desnu dijagonalu
 
 //Dodaj Boju
@@ -566,7 +629,8 @@ const DesnaDiagonala = (i, j) => {
       else return false;
     } else return false;
 };
-
+//#endregion
+//#region LevaDijagonala
 //Check Levu dijagonalu.
 function DodajBojuLD(Gridara, i, j, val) {
   Gridara[i][j].classList.add(val);
@@ -660,6 +724,7 @@ const LevaDiagonala = (i, j) => {
       if (br != 0) return true;
     } else return false;
 };
+//#endregion
 //#endregion
 var BrojacPrekida = 0;
 
